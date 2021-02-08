@@ -6,7 +6,6 @@ from collections import Counter
 class Extractor:
     def __init__(self,csvfilename):
         self.csvFilename = csvfilename
-        self.csvData = ""
         self.turnList = []
         self.whiteIDList = []
         self.blackIDList = []
@@ -24,8 +23,41 @@ class Extractor:
                 self.turnList.append(int(row['turns']))
                 self.whiteRatingList.append(int(row['white_rating']))
                 self.blackRatingList.append(int(row['black_rating']))
+                self.openingPlayList.append(int(row['opening_ply']))
                 self.ratedList.append(str(row['rated']))
     
+    def printDatasetValues(self):
+        print("\n=== Dataset Stats and Distinct Values ===")
+        print("\n-NUMERICAL DATA-\n")
+        print("turns:")
+        print("Min: ", self.getMin(self.turnList))
+        print("Max: ", self.getMax(self.turnList))
+        print("Mean: ", self.getMean(self.turnList))
+        print("Median: ",self.getMedian(self.turnList))
+        print("Standard Deviation: ", self.calculateStandardDev(self.turnList))
+        print("\nwhite_rating:")
+        print("Min: ", self.getMin(self.whiteRatingList))
+        print("Max: ", self.getMax(self.whiteRatingList))
+        print("Mean: ", self.getMean(self.whiteRatingList))
+        print("Median: ",self.getMedian(self.whiteRatingList))
+        print("Standard Deviation: ", self.calculateStandardDev(self.whiteRatingList))
+        print("\nblack_rating:")
+        print("Min: ", self.getMin(self.blackRatingList))
+        print("Max: ", self.getMax(self.blackRatingList))
+        print("Mean: ", self.getMean(self.blackRatingList))
+        print("Median: ",self.getMedian(self.blackRatingList))
+        print("Standard Deviation: ", self.calculateStandardDev(self.blackRatingList))
+        print("\nopening_ply:")
+        print("Min: ", self.getMin(self.openingPlayList))
+        print("Max: ", self.getMax(self.openingPlayList))
+        print("Mean: ", self.getMean(self.openingPlayList))
+        print("Median: ",self.getMedian(self.openingPlayList))
+        print("Standard Deviation: ", self.calculateStandardDev(self.openingPlayList))
+
+        booleanArray = self.calculateBooleanFrequency(self.ratedList)
+        print("Rated boolean count: TRUE:", booleanArray[0], " FALSE: ", booleanArray[1])
+        
+
     def getMin(self,list):
         return min(list)
 
@@ -58,6 +90,8 @@ class Extractor:
 
 extractor = Extractor('cs455_homework1_dibble.csv')
 extractor.readFileToData()
+extractor.printDatasetValues()
+
 
 
         
