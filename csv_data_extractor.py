@@ -1,12 +1,15 @@
 # Read dataset from a csv, for each attribute, calculate min, max, mean, median, standard deviation
 import csv
 import statistics
+from collections import Counter
 
 class Extractor:
     def __init__(self,csvfilename):
         self.csvFilename = csvfilename
         self.csvData = ""
         self.turnList = []
+        self.whiteIDList = []
+        self.blackIDList = []
         self.whiteRatingList = []
         self.blackRatingList = []
         self.openingPlayList = []
@@ -16,6 +19,8 @@ class Extractor:
         with open(self.csvFilename, newline='') as csvfile:
             reader = csv.DictReader(csvfile, delimiter=',')
             for row in reader:
+                self.whiteIDList.append(row['white_id'])
+                self.blackIDList.append(row['black_id'])
                 self.turnList.append(int(row['turns']))
                 self.whiteRatingList.append(int(row['white_rating']))
                 self.blackRatingList.append(int(row['black_rating']))
@@ -46,10 +51,13 @@ class Extractor:
                 falseNum += 1
         return [trueNum,falseNum]
         
+    def getUniqueMaxValue(self,list):
+        valueDict = dict(Counter(list).items())
+        maxValue = max(valueDict, key=valueDict.get)
+        return maxValue
 
 extractor = Extractor('cs455_homework1_dibble.csv')
 extractor.readFileToData()
-print(extractor.calculateBooleanFrequency(extractor.ratedList))
 
 
         
